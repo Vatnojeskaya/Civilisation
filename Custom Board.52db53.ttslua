@@ -1,0 +1,431 @@
+MARKER_TYPE = {
+  'http://cloud-3.steamusercontent.com/ugc/1007060210890804301/FD507B9EA088FD330ABAB0322CD0424FB34B2433/', --Afrique
+  'http://cloud-3.steamusercontent.com/ugc/1007060210891003252/468F2F89BA2EC802A59A33ECE005F517254160B8/', --Italie
+  'http://cloud-3.steamusercontent.com/ugc/1007060210891029634/9422AF20F96987A8FD56B8E330F1A162ADB92E2F/', --Illyrie
+  'http://cloud-3.steamusercontent.com/ugc/1007060210891048704/68AD6A2D93DE55686865CCC172D72DCB9A19A69D/', --Thrace
+  'http://cloud-3.steamusercontent.com/ugc/1007060210891069933/0B002CA479F9921B500EC3A6CE6B4DCF1C06FA62/', --Crète
+  'http://cloud-3.steamusercontent.com/ugc/1007060210891086027/61D1D821653DFE5EAD898EE6C64F6E2A5BE919CC/', --Asie
+  'http://cloud-3.steamusercontent.com/ugc/1007060210891098096/92EE70DD7CC9D20FF8DC8C6DF2F2FCAC49E7C171/', --Assyrie
+  'http://cloud-3.steamusercontent.com/ugc/1007060210891112320/59EBB2C1E09E17B8B948B8EB888E3ED41CA07E94/', --Babylone
+  'http://cloud-3.steamusercontent.com/ugc/1007060210891125640/2789D86B636B05BD7F466441226ADB80E3CC8449/'  --Egypte
+}
+
+CITY_TYPE = {
+  "http://cloud-3.steamusercontent.com/ugc/1007060210890807593/EFB4143A06C317FC67CBFAB21644F17E4AB17797/",
+  "http://cloud-3.steamusercontent.com/ugc/1007060210891004184/C5C28ED2FAD86994E60D1481F49BE07C4318C261/",
+  "http://cloud-3.steamusercontent.com/ugc/1007060210891028260/E51C16CBF8773474C71530C3222BAA4BA51A8CDA/",
+  "http://cloud-3.steamusercontent.com/ugc/1007060210891051459/556175ADAC357F4531512CF2844CE64284CCA034/",
+  "http://cloud-3.steamusercontent.com/ugc/1007060210891071702/7C9676F8A74E70C5A0B432ADCC09EF25CC34613F/",
+  "http://cloud-3.steamusercontent.com/ugc/1007060210891084909/CB21903E5D50D9AD47D70F0D1A2C99BD839B456F/",
+  "http://cloud-3.steamusercontent.com/ugc/1007060210891099817/F555E36C9540BC5C1BB922BEFF1C47CE4948342F/",
+  "http://cloud-3.steamusercontent.com/ugc/1007060210891111508/2B07DDE17759492442F618956B0F7DEC7B69BAAE/",
+  "http://cloud-3.steamusercontent.com/ugc/1007060210891127320/B5D5B77BE985E6DA56360E325E338D3737E4135E/"
+
+}
+
+HAND_ZONE = {
+  '1744f8', --Afrique
+  'fd9d47', --Italie
+  '16235f', --Illyrie
+  'a11b97', --Thrace
+  'f50bf1', --Crète
+  '89f79b', --Asie
+  'cf7f60', --Assyrie
+  '6f0eb6', --Babylone
+  'b09803'  --Egypte
+}
+STOCK_ZONE = {
+  '0b107b', --Afrique
+  'a350b9', --Italie
+  '0d355d', --Illyrie
+  'ffd0bf', --Thrace
+  '0095b5', --Crète
+  '04c4af', --Asie
+  '817470', --Assyrie
+  'd0c1e9', --Babylone
+  'e7b100'  --Egypte
+}
+
+PLAYER_TYPE = {
+  {'Joueur Africain', 'Brown'},
+  {'Joueur Italien', 'Red'},
+  {'Joueur Illyrien', 'Yellow'},
+  {'Joueur Thrace', 'Green'},
+  {'Joueur Crétois', 'Teal'},
+  {'Joueur Asiatique', 'Orange'},
+  {'Joueur Assyrien', 'Blue'},
+  {'Joueur Babylonnien', 'White'},
+  {'Joueur Egyptien', 'Purple'}
+}
+
+CENSUS_GUID = {
+  'b7c205',
+  '90fe34',
+  'd356e4',
+  'e807af',
+  '27ef2b',
+  'e76f53',
+  'f5f30a',
+  'd7f49e',
+  '749d07'
+}
+
+DECK_TRADE_CARD = {
+  '35cd07',
+  'cab0f7',
+  '3026ba',
+  '872523',
+  '94e1fb',
+  '020c1e',
+  'bb5bd2',
+  '2010ca',
+  '9f5e4c'
+}
+
+function onLoad()
+    params = {
+        click_function = "doThePop",
+        function_owner = self,
+        label          = "Pop",
+        position       = {7, 1, -8.5},
+        rotation       = {0, 0, 0},
+        width          = 500,
+        height         = 200,
+        font_size      = 75,
+        color          = {1, 1, 1},
+        font_color     = {0, 0, 0},
+        tooltip        = '1st: Gain pop'
+    }
+    self.createButton(params)
+
+    params = {
+        click_function = "moveCensusMarker",
+        function_owner = self,
+        label          = "Census",
+        position       = {3.5, 1, -8.5},
+        rotation       = {0, 0, 0},
+        width          = 500,
+        height         = 200,
+        font_size      = 75,
+        color          = {1, 1, 1},
+        font_color     = {0, 0, 0},
+        tooltip        = '2nd: Calculate Census'
+    }
+    self.createButton(params)
+
+    params = {
+        click_function = "drawTradeCard",
+        function_owner = self,
+        label          = "TradeCard",
+        position       = {-7, 1, -8.5},
+        rotation       = {0, 0, 0},
+        width          = 500,
+        height         = 200,
+        font_size      = 75,
+        color          = {1, 1, 1},
+        font_color     = {0, 0, 0},
+        tooltip        = 'Deal cards for all players'
+    }
+    self.createButton(params)
+end
+
+function findObjOnLocation(pos, my_type, radius_y, radius_xz)
+
+    local my_type = (my_type or 3)
+    local radius_y = (radius_y or 1.5)
+    local radius_xz = (radius_xz or radius_y)
+    --log(radius_xz, 'radius_xz')
+    --log(radius_y, 'radius_y')
+
+    local objList = Physics.cast({
+        origin=pos, direction={0,1,0}, type = my_type, size={radius_xz, radius_y, radius_xz},
+        max_distance = 0, debug=true,
+    })
+    --log(size,'size')
+
+    local refinedList = {}
+
+    for key, value in ipairs(objList) do
+      table.insert(refinedList, value.hit_object)
+    end
+
+    n = #refinedList
+
+    if n == 0 then
+      refinedList = nil
+    end
+
+    return refinedList
+end
+
+function takeObject()
+  local objects = getObjectFromGUID('b73273').getObjects()
+  return objects
+end
+
+function moveMarker(table_1, table_2)
+
+  for i = 1,9 do
+
+    local alert_marker = false
+    local m = #table_1[i]
+    local n = #table_2[i]
+
+    local stock_marker = nil
+    stock_marker = getObjectFromGUID(STOCK_ZONE[i]).getObjects()
+    local p = #stock_marker
+
+    if p >= (m + (2*n)) then
+
+      for j = 1,m do
+        stock_marker[j].setPositionSmooth({table_1[i][j][1], 3, table_1[i][j][3]})
+      end
+
+      for k = (m + 1), (m + n) do
+        local l = k + n
+        local r = k - m
+        stock_marker[k].setPositionSmooth({table_2[i][r][1], 3, table_2[i][r][3]})
+        stock_marker[l].setPositionSmooth({table_2[i][r][1], 3.2, table_2[i][r][3]})
+      end
+
+    elseif p < (m + (2*n)) then
+
+      alert_marker = true
+
+      if p >= (2*n) then
+
+        if (p - (2*n)) > 0 then
+
+          for j = 1,n do
+            local k = n + j
+            stock_marker[j].setPositionSmooth({table_2[i][j][1], 3, table_2[i][j][3]})
+            stock_marker[k].setPositionSmooth({table_2[i][j][1], 3.2, table_2[i][j][3]})
+          end
+
+          for l = ((2*n) + 1), p do
+            local r = (l - (2*n))
+            stock_marker[l].setPositionSmooth({table_1[i][r][1], 3, table_1[i][r][3]})
+          end
+
+        elseif (p - (2*n)) <= 0 then
+
+          if p > n then
+            for j = 1,n do
+
+              local k = n + j
+              stock_marker[j].setPositionSmooth({table_2[i][j][1], 3, table_2[i][j][3]})
+
+              if k <= p then
+                stock_marker[k].setPositionSmooth({table_2[i][j][1], 3.2, table_2[i][j][3]})
+              end
+            end
+
+          elseif p <= n then
+            for j = 1,p do
+              stock_marker[j].setPositionSmooth({table_2[i][j][1], 3, table_2[i][j][3]})
+            end
+          end
+        end
+
+      elseif p < (2*n) then
+
+        if p > n then
+
+          for j = 1,n do
+            local k = n + j
+            stock_marker[j].setPositionSmooth({table_2[i][j][1], 3, table_2[i][j][3]})
+
+            if k <= p then
+              stock_marker[k].setPositionSmooth({table_2[i][j][1], 3.2, table_2[i][j][3]})
+            end
+          end
+
+        elseif p <= n then
+
+          for j = 1,p do
+            stock_marker[j].setPositionSmooth({table_2[i][j][1], 3, table_2[i][j][3]})
+          end
+        end
+      end
+    end
+    if alert_marker == true then
+    printToAll(PLAYER_TYPE[i][1].." n'a pas assez de pions population!", {1,1,1})
+    end
+  end
+end
+
+
+function arrangeMarker()
+
+  local table_1_marker = {{},{},{},{},{},{},{},{},{}}
+  local table_2_marker = {{},{},{},{},{},{},{},{},{}}
+
+  local objects = nil
+  local objects = getObjectFromGUID('7c6756').getObjects()
+
+  for k, object in pairs(objects) do
+
+    local custom_object = object.getCustomObject()
+    local object_url = custom_object['image']
+    if object_url ~= nil then
+
+      for i = 1,9 do
+        if object_url == MARKER_TYPE[i] then
+          local object_pos = object.getPosition()
+          local pos_for_find = {object_pos[1], 1.15, object_pos[3]}
+          local twice_obj = findObjOnLocation(pos_for_find,3,0.05,0.5)
+          local temp_pos = {object_pos[1], 4, object_pos[3]}
+
+          if twice_obj == nil then
+
+            table.insert(table_1_marker[i], object_pos)
+
+          elseif twice_obj ~= nil then
+
+            table.insert(table_2_marker[i], object_pos)
+
+          end
+        end
+      end
+    end
+  end
+
+  return table_1_marker, table_2_marker
+
+end
+
+function doThePop()
+
+  local table_1, table_2 = arrangeMarker()
+  moveMarker(table_1, table_2)
+
+end
+
+function moveCensusMarker()
+  determinateWhoAndHowCensus()
+end
+
+function censusLocation(h)
+
+  local vect = 0.73
+  local census = {}
+  census[2] = 1.50
+
+  local start = {32.10, 15.50}
+  local mod = h%3
+  local x1 = (h - 1) / 3
+  local x2 = h / 3
+  local x3 = (h + 1) / 3
+
+  if h == 1 then
+    census[1] = start[1]
+    census[3] = start[2]
+
+  elseif mod == 2 then
+    census[1] = start[1] + (x3*vect)
+    census[3] = start[2]
+
+  elseif mod == 0 then
+    census[1] = start[1] + (x2*vect)
+    census[3] = start[2] + vect
+
+  elseif mod == 1 then
+    census[1] = start[1] + (x1*vect)
+    census[3] = start[2] + 2*vect
+
+  end
+
+  return census
+
+end
+
+
+function howMoveCensusMarker(i,h)
+
+  local census_location = {}
+
+  local census_board = getObjectFromGUID('81a04a')
+  local temp_census_marker = {}
+  temp_census_marker = census_board.getObjects()
+
+  for k, marker in pairs(temp_census_marker) do
+    local marker_guid = marker.getGUID()
+    if marker_guid == CENSUS_GUID[i] then
+      census_location = censusLocation(h)
+      local census_marker = getObjectFromGUID(marker_guid)
+      census_marker.setPositionSmooth(census_location)
+    end
+  end
+end
+
+function determinateWhoAndHowCensus()
+
+  local nb_and_type_pop = {0,0,0,0,0,0,0,0,0}
+
+  local objects = getObjectFromGUID('b73273').getObjects()
+  for k, object in pairs(objects) do
+    local custom_object = object.getCustomObject()
+    local object_url = custom_object['image']
+
+    if object_url ~= nil then
+      for i = 1,9 do
+
+        if object_url == MARKER_TYPE[i] then
+          nb_and_type_pop[i] = nb_and_type_pop[i] + 1
+        end
+      end
+    end
+  end
+
+  for i = 1,9 do
+    local h = nb_and_type_pop[i]
+    if h ~= 0 then
+      howMoveCensusMarker(i,h)
+    end
+  end
+end
+
+function distributeCard(i,j)
+
+  if i == 1 then
+    getObjectFromGUID(DECK_TRADE_CARD[i]).deal(1,PLAYER_TYPE[j][2])
+  elseif i > 1 then
+    for k = 1, i do
+      getObjectFromGUID(DECK_TRADE_CARD[k]).deal(1,PLAYER_TYPE[j][2])
+    end
+  end
+
+end
+
+
+
+function drawTradeCard()
+
+  local nb_city = {0,0,0,0,0,0,0,0,0} --table des cités par ordre de la TSA
+
+  local objects = nil
+  local objects = getObjectFromGUID('7c6756').getObjects()
+
+  for k, object in pairs(objects) do
+
+    local custom_object = object.getCustomObject()
+    local object_url = custom_object['face']
+
+    if object_url ~= nil then
+      for i = 1,9 do
+        if object_url == CITY_TYPE[i] then
+          nb_city[i] = nb_city[i] + 1          
+        end
+      end
+    end
+  end
+
+  for i = 1,9 do
+    for j = 1,9 do
+      if nb_city[j] == i then
+        distributeCard(i,j)
+      end
+    end
+  end
+
+end

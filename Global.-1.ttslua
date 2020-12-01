@@ -1,0 +1,57 @@
+--[[ Lua code. See documentation: https://api.tabletopsimulator.com/ --]]
+TREASURE_ZONE = {
+  'a4c4dd',
+  '52f66a',
+  'a3fd3c',
+  '6cfd9d',
+  '6c39c6',
+  '3f6686',
+  '7c7ccb',
+  'c00670',
+  'c02cd5'
+}
+
+STOCK_ZONE = {
+  '0b107b', --Afrique
+  'a350b9', --Italie
+  '0d355d', --Illyrie
+  'ffd0bf', --Thrace
+  '0095b5', --Crète
+  '04c4af', --Asie
+  '817470', --Assyrie
+  'd0c1e9', --Babylone
+  'e7b100'  --Egypte
+}
+
+
+function onObjectEnterScriptingZone(zone, object)
+
+  if zone.getGUID() == TREASURE_ZONE[1] or zone.getGUID() == TREASURE_ZONE[2] or zone.getGUID() == TREASURE_ZONE[3] or zone.getGUID() == TREASURE_ZONE[4]
+    or zone.getGUID() == TREASURE_ZONE[5] or zone.getGUID() == TREASURE_ZONE[6] or zone.getGUID() == TREASURE_ZONE[7] or zone.getGUID() == TREASURE_ZONE[8]
+    or zone.getGUID() == TREASURE_ZONE[9] then
+
+      if object.name == 'Custom_Tile' then
+        if not object.is_face_down then
+          Wait.time(object.setRotationSmooth({x=0,y=0,z=180}), 0.2)
+        end
+      end
+  elseif zone.getGUID() == STOCK_ZONE[1] or zone.getGUID() == STOCK_ZONE[2] or zone.getGUID() == STOCK_ZONE[3] or zone.getGUID() == STOCK_ZONE[4]
+    or zone.getGUID() == STOCK_ZONE[5] or zone.getGUID() == STOCK_ZONE[6] or zone.getGUID() == STOCK_ZONE[7] or zone.getGUID() == STOCK_ZONE[8]
+    or zone.getGUID() == STOCK_ZONE[9] then
+      if object.name == 'Custom_Tile' then
+        if object.is_face_down then
+          object.setRotationSmooth({x=0,y=180,z=0})
+        end
+      end
+  end
+
+end
+--[[ The onLoad event is called after the game save finishes loading. --]]
+function onLoad()
+    --[[ print('onLoad!') --]]
+end
+
+--[[ The onUpdate event is called once per frame. --]]
+function onUpdate()
+    --[[ print('onUpdate loop!') --]]
+end
