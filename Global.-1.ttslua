@@ -32,7 +32,7 @@ function onObjectEnterScriptingZone(zone, object)
 
       if object.name == 'Custom_Tile' then
         if not object.is_face_down then
-          Wait.time(object.setRotationSmooth({x=0,y=0,z=180}), 0.2)
+          object.setRotationSmooth({x=0,y=0,z=180})
         end
       end
   elseif zone.getGUID() == STOCK_ZONE[1] or zone.getGUID() == STOCK_ZONE[2] or zone.getGUID() == STOCK_ZONE[3] or zone.getGUID() == STOCK_ZONE[4]
