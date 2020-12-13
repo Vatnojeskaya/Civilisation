@@ -23,17 +23,19 @@ CITY_TYPE = {
 
 }
 
-HAND_ZONE = {
-  '1744f8', --Afrique
-  'fd9d47', --Italie
-  '16235f', --Illyrie
-  'a11b97', --Thrace
-  'f50bf1', --Crète
-  '89f79b', --Asie
-  'cf7f60', --Assyrie
-  '6f0eb6', --Babylone
-  'b09803'  --Egypte
+DECKS_POS = {
+  {44.49, 1.44, -9.30}, --Peaux, Ocre
+  {44.57, 1.43, -12.72}, --Fer, Papyrus
+  {44.51, 1.42, -16.07}, --Sel
+  {39.28, 1.42, -9.39}, --Grain
+  {39.26, 1.41, -12.74}, --Tissus
+  {39.46, 1.41, -16.03}, --Bronze
+  {34.07, 1.40, -9.28}, -- Epices
+  {34.09, 1.40, -12.62}, --Pierres précieuses
+  {34.10, 1.39, -15.93}, --Or
+
 }
+
 STOCK_ZONE = {
   '0b107b', --Afrique
   'a350b9', --Italie
@@ -70,17 +72,6 @@ CENSUS_GUID = {
   '749d07'
 }
 
-DECK_TRADE_CARD = {
-  '35cd07',
-  'cab0f7',
-  '3026ba',
-  '872523',
-  '94e1fb',
-  '020c1e',
-  'bb5bd2',
-  '2010ca',
-  '9f5e4c'
-}
 
 function onLoad()
     params = {
@@ -139,7 +130,7 @@ function findObjOnLocation(pos, my_type, radius_y, radius_xz)
 
     local objList = Physics.cast({
         origin=pos, direction={0,1,0}, type = my_type, size={radius_xz, radius_y, radius_xz},
-        max_distance = 0, debug=true,
+        max_distance = 0, debug=false,
     })
     --log(size,'size')
 
@@ -177,16 +168,30 @@ function moveMarker(table_1, table_2)
 
     if p >= (m + (2*n)) then
 
-      for j = 1,m do
-        stock_marker[j].setPositionSmooth({table_1[i][j][1], 3, table_1[i][j][3]})
+      if m > 1 then
+        for j = 1,m do
+          stock_marker[j].setPositionSmooth({table_1[i][j][1], 3, table_1[i][j][3]})
+        end
+      elseif m == 1 then
+        stock_marker[1].setPositionSmooth({table_1[i][1][1], 3, table_1[i][1][3]})
       end
 
-      for k = (m + 1), (m + n) do
-        local l = k + n
+      if n > 1 then
+        for k = (m + 1), (m + n) do
+          local l = k + n
+          local r = k - m
+          stock_marker[k].setPositionSmooth({table_2[i][r][1], 3, table_2[i][r][3]})
+          stock_marker[l].setPositionSmooth({table_2[i][r][1], 3.2, table_2[i][r][3]})
+        end
+      elseif n == 1 then
+        local k = m + 1
+        local l = k + 1
         local r = k - m
         stock_marker[k].setPositionSmooth({table_2[i][r][1], 3, table_2[i][r][3]})
         stock_marker[l].setPositionSmooth({table_2[i][r][1], 3.2, table_2[i][r][3]})
       end
+
+
 
     elseif p < (m + (2*n)) then
 
@@ -263,30 +268,34 @@ function arrangeMarker()
   local objects = nil
   local objects = getObjectFromGUID('7c6756').getObjects()
 
+  local stop_searcher = false
   for k, object in pairs(objects) do
 
-    local custom_object = object.getCustomObject()
-    local object_url = custom_object['image']
-    if object_url ~= nil then
+      local custom_object = object.getCustomObject()
+      local object_url = custom_object['image']
+      if object_url ~= nil then
 
-      for i = 1,9 do
-        if object_url == MARKER_TYPE[i] then
-          local object_pos = object.getPosition()
-          local pos_for_find = {object_pos[1], 1.15, object_pos[3]}
-          local twice_obj = findObjOnLocation(pos_for_find,3,0.05,0.5)
-          local temp_pos = {object_pos[1], 4, object_pos[3]}
 
-          if twice_obj == nil then
+        for i = 1,9 do
+          if object_url == MARKER_TYPE[i] then
 
-            table.insert(table_1_marker[i], object_pos)
+            local object_pos = object.getPosition()
+            local pos_for_find = {object_pos[1], 1.15, object_pos[3]}
+            local twice_obj = findObjOnLocation(pos_for_find,3,0.05,0.5)
+            local temp_pos = {object_pos[1], 4, object_pos[3]}
 
-          elseif twice_obj ~= nil then
+            if twice_obj == nil then
 
-            table.insert(table_2_marker[i], object_pos)
+              table.insert(table_1_marker[i], object_pos)
 
+            elseif twice_obj ~= nil then
+
+              table.insert(table_2_marker[i], object_pos)
+
+            end
           end
         end
-      end
+
     end
   end
 
@@ -388,10 +397,32 @@ end
 function distributeCard(i,j)
 
   if i == 1 then
-    getObjectFromGUID(DECK_TRADE_CARD[i]).deal(1,PLAYER_TYPE[j][2])
+
+    local type_deck = findObjOnLocation(DECKS_POS[i], 3, 2, 0.5)
+
+    for k,v in pairs(type_deck) do
+
+      if (v.tag == 'Deck') or (v.tag == 'Card') then
+        local deck_guid = v.getGUID()
+        getObjectFromGUID(deck_guid).deal(1,PLAYER_TYPE[j][2])
+
+      end
+    end
+
+
   elseif i > 1 then
+
     for k = 1, i do
-      getObjectFromGUID(DECK_TRADE_CARD[k]).deal(1,PLAYER_TYPE[j][2])
+
+      local type_deck = findObjOnLocation(DECKS_POS[k], 3, 2, 0.5)
+
+      for k,v in pairs(type_deck) do
+        if v.tag == 'Deck' or (v.tag == 'Card') then
+          local deck_guid = v.getGUID()
+          getObjectFromGUID(deck_guid).deal(1,PLAYER_TYPE[j][2])
+        end
+      end
+
     end
   end
 
@@ -414,7 +445,7 @@ function drawTradeCard()
     if object_url ~= nil then
       for i = 1,9 do
         if object_url == CITY_TYPE[i] then
-          nb_city[i] = nb_city[i] + 1          
+          nb_city[i] = nb_city[i] + 1
         end
       end
     end
